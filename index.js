@@ -3,32 +3,69 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     app = express();
 
+
+var Sequelize = require('sequelize'),
+  sequelize = null;
+
+if (process.env.DATABASE_URL) {
+  // the application is executed on Heroku ... use the postgres database
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect:  'postgres',
+    protocol: 'postgres',
+    port:     match[4],
+    host:     match[3],
+    logging:  true //false
+  })
+}
+else {
+  sequelize = new Sequelize('database', 'root', null, {
+    host: 'localhost',
+    dialect: 'sqlite',
+    storage: 'database.sqlite'
+  });
+}
+sequelize.define("TodoList", {
+  name: Sequelize.STRING
+});
+sequelize.define("Todo", {
+  name: Sequelize.STRING
+});
+const Todo = sequelize.models.Todo;
+const TodoList = sequelize.models.TodoList;
+TodoList.hasMany(Todo, {as: 'todos'});
+Todo.belongsTo(TodoList, {as: 'todoList'});
+
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json()); // Use JSON body parser
 
 // Todo lists
 app.get('/todo-lists', (req, res, next) => {
   console.log('Fetched list of todo lists.');
-  res.json([{id: 1, name: 'my list'}, {id: 2, name: 'Second list'}]);
+  TodoList.findAll().then(todoLists => res.json(todoLists));
 });
 
 app.post('/todo-lists', (req, res, next) => {
   const name = req.body.name;
   console.log('Created a todo list with name ' + name);
-  const id = 1;
-  res.json({url: 'http://gofore-todo.herokuapp.com/todo-lists/' + id});
+  TodoList.create({name: name}).then(todo => {
+    res.json({url: 'http://gofore-todo.herokuapp.com/todo-lists/' + todo.id});
+  });
 });
 
 app.get('/todo-lists/:id', (req, res, next) => {
   const id = req.params.id;
   console.log('Fetched todo list with an id ' + id);
-  res.json([{id: 1, task: 'Do the laundry'}, {id: 2, task: 'Go to school'}]);
+  TodoList.findById(id)
+    .then(todoList => todoList.getTodos()
+      .then(todos => res.json({name: todoList.name, todos: todos})));
 });
 
 app.post('/todo-lists/:id', (req, res, next) => {
+  const id = req.params.id;
   console.log('Created a todo item for list with an id ' + id);
-  const id = 1;
-  res.json({url: 'http://gofore-todo.herokuapp.com/todos/' + id});
+  TodoList.findById(id)
+    .then((todoList) => todoList.createTodo(req.body)
+      .then(todoList => res.json({url: 'http://gofore-todo.herokuapp.com/todos/' + todoList.id})));
 });
 
 // Todo items
@@ -41,9 +78,11 @@ app.put('/todos/:id', (req, res, next) => {
 app.delete('/todos/:id', (req, res, next) => {
   const id = req.params.id;
   console.log('Deleted todo item with an id ' + id);
-  res.json({});
+  Todo.findById(id).then(todo => Todo.destroy().then(() => res.json({})));
 });
 
-app.listen(process.env.PORT || 8080, function(){
-  console.log('CORS-enabled web server listening on port 80');
+sequelize.sync().then(() => {
+  app.listen(process.env.PORT || 8080, function(){
+    console.log('CORS-enabled web server listening on port 80');
+  });
 });
