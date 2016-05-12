@@ -27,7 +27,6 @@ sequelize.define("Todo", {
 const Todo = sequelize.models.Todo;
 const TodoList = sequelize.models.TodoList;
 TodoList.hasMany(Todo, {as: 'todos'});
-Todo.belongsTo(TodoList, {as: 'todoList'});
 
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json()); // Use JSON body parser
@@ -66,13 +65,13 @@ app.post('/todo-lists/:id', (req, res, next) => {
 app.put('/todos/:id', (req, res, next) => {
   const id = req.params.id;
   console.log('Updated todo item with an id ' + id);
-  res.json({});
+  Todo.findById(id).then(todo => todo.update(req.body).then(() => res.json({})));
 });
 
 app.delete('/todos/:id', (req, res, next) => {
   const id = req.params.id;
   console.log('Deleted todo item with an id ' + id);
-  Todo.findById(id).then(todo => Todo.destroy().then(() => res.json({})));
+  Todo.findById(id).then(todo => todo.destroy().then(() => res.json({})));
 });
 
 sequelize.sync().then(() => {
