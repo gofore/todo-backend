@@ -1,0 +1,40 @@
+var express = require('express'),
+    cors = require('cors'),
+    app = express();
+
+app.use(cors());
+
+// Todo lists
+app.get('/todo-lists', (req, res, next) => {
+  console.log('Fetched list of todo lists.');
+  res.json([{id: 1, name: 'my list'}, {id: 2, name: 'Second list'}]);
+});
+
+app.get('/todo-lists/:id', (req, res, next) => {
+  const id = req.params.id;
+  console.log('Fetched todo list with an id ' + id);
+  res.json([{id: 1, task: 'Do the laundry'}, {id: 2, task: 'Go to school'}]);
+});
+
+app.post('/todo-lists/:id', (req, res, next) => {
+  console.log('Created a todo item for list with an id ' + id);
+  const id = 1;
+  res.json({url: 'http://gofore-todo.herokuapp.com/todos/' + id});
+});
+
+// Todo items
+app.put('/todos/:id', (req, res, next) => {
+  const id = req.params.id;
+  console.log('Updated todo item with an id ' + id);
+  res.json({});
+});
+
+app.delete('/todos/:id', (req, res, next) => {
+  const id = req.params.id;
+  console.log('Deleted todo item with an id ' + id);
+  res.json({});
+});
+
+app.listen(80, function(){
+  console.log('CORS-enabled web server listening on port 80');
+});
