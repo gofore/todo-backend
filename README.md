@@ -22,10 +22,10 @@ Returns an object containing the todo list name and a list of todo items for tod
 
 ```json
 {
-  name: 'My list',
-  todos: [
-    {id: 1, name: 'Do the laundry'},
-    {id: 2, name: 'Wash the dishes'}
+  "name": "My list",
+  "todos": [
+    {"id": 1, "name": "Do the laundry"},
+    {"id": 2, "name": "Wash the dishes"}
   ]
 }
 ```
@@ -36,7 +36,7 @@ Returns 200 on success with JSON object containing link to newly created todo it
 
 ```json
 {
-  url: 'http://gofore-todo.herokuapp.com/todos/1'
+  "url": "http://gofore-todo.herokuapp.com/todos/1"
 }
 ```
 
