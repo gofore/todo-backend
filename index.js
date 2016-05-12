@@ -44,6 +44,6 @@ app.delete('/todos/:id', (req, res, next) => {
   res.json({});
 });
 
-app.listen(80, function(){
+app.listen(process.env.PORT || 8080, function(){
   console.log('CORS-enabled web server listening on port 80');
 });
