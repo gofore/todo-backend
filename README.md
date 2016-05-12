@@ -17,6 +17,9 @@ npm start
 #### GET `todo-lists`
 Returns a list of todo lists.
 
+#### POST `todo-lists`
+Creates a todo list with a name given as JSON object.
+
 #### GET `todo-lists/:id`
 Returns an object containing the todo list name and a list of todo items for todo list with id `id`.
 

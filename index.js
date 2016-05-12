@@ -1,13 +1,22 @@
 var express = require('express'),
     cors = require('cors'),
+    bodyParser = require('body-parser'),
     app = express();
 
-app.use(cors());
+app.use(cors()); // Enable CORS
+app.use(bodyParser.json()); // Use JSON body parser
 
 // Todo lists
 app.get('/todo-lists', (req, res, next) => {
   console.log('Fetched list of todo lists.');
   res.json([{id: 1, name: 'my list'}, {id: 2, name: 'Second list'}]);
+});
+
+app.post('/todo-lists', (req, res, next) => {
+  const name = req.body.name;
+  console.log('Created a todo list with name ' + name);
+  const id = 1;
+  res.json({url: 'http://gofore-todo.herokuapp.com/todo-lists/' + id});
 });
 
 app.get('/todo-lists/:id', (req, res, next) => {
