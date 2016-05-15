@@ -33,7 +33,7 @@ const TodoList = sequelize.models.TodoList;
 TodoList.hasMany(Todo, {as: 'todos'});
 
 app.use(cors()); // Enable CORS
-app.use(bodyParser.json()); // Use JSON body parser
+app.use(bodyParser.json({strict: false})); // Use JSON body parser
 
 // Todo lists
 app.get('/todo-lists', (req, res, next) => {
