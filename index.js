@@ -22,7 +22,11 @@ sequelize.define("TodoList", {
   name: Sequelize.STRING
 });
 sequelize.define("Todo", {
-  name: Sequelize.STRING
+  name: Sequelize.STRING,
+  done: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 });
 const Todo = sequelize.models.Todo;
 const TodoList = sequelize.models.TodoList;
