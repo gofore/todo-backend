@@ -66,6 +66,14 @@ app.post('/todo-lists/:id', (req, res, next) => {
       .then(todoList => res.json({url: 'http://gofore-todo.herokuapp.com/todos/' + todoList.id})));
 });
 
+
+app.get('/todos/:id', (req, res, next) => {
+  const id = req.params.id;
+  console.log('Fetched todo with an id ' + id);
+  Todo.findById(id)
+    .then(todo => res.json(todo));
+});
+
 // Todo items
 app.put('/todos/:id', (req, res, next) => {
   const id = req.params.id;

@@ -44,6 +44,9 @@ Returns 200 on success with JSON object containing link to newly created todo it
 ```
 
 ### Todo items
+#### GET `todos/:id`
+Returns the todo item with id `id`.
+
 #### PUT `todos/:id`
 Updates the todo item with id `id`. Takes an object with a name and a done status as JSON payload.
 
