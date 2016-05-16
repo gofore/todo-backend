@@ -23,6 +23,7 @@ sequelize.define("TodoList", {
 });
 sequelize.define("Todo", {
   name: Sequelize.STRING,
+  assignee: Sequelize.STRING,
   done: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
