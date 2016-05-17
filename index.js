@@ -63,7 +63,7 @@ app.post('/todo-lists/:id', (req, res, next) => {
   console.log('Created a todo item for list with an id ' + id);
   TodoList.findById(id)
     .then((todoList) => todoList.createTodo(req.body)
-      .then(todoList => res.json({url: 'http://gofore-todo.herokuapp.com/todos/' + todoList.id})));
+      .then(todo => res.json(todo)));
 });
 
 
