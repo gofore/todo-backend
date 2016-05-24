@@ -27,14 +27,19 @@ Returns an object containing the todo list name and a list of todo items for tod
 {
   "name": "My list",
   "todos": [
-    {"id": 1, "name": "Do the laundry", "done": "false"},
-    {"id": 2, "name": "Wash the dishes", "done": "true"}
+    {"id": 1, "name": "Do the laundry", "done": "false", "assignee": "me@todo.com"},
+    {"id": 2, "name": "Wash the dishes", "done": "true", "assignee": "me@todo.com"}
   ]
 }
 ```
 
 #### POST `todo-lists/:id`
 Adds a todo item with a name given as a JSON object to a list with id `id`.
+```json
+{
+  "name": "Do something"
+}
+```
 Returns 200 on success with JSON object containing link to newly created todo item as value for key `url`:
 
 ```json
@@ -48,10 +53,10 @@ Returns 200 on success with JSON object containing link to newly created todo it
 Returns the todo item with id `id`.
 
 #### PUT `todos/:id`
-Updates the todo item with id `id`. Takes an object with a name and a done status as JSON payload.
+Updates the todo item with id `id`. Takes an object with a name, done status and assignee as a JSON payload.
 
 ```json
-{"name": "Do the laundry", "done": "true"}
+{"name": "Do the laundry", "done": "true", "assignee": "me@todo.com"}
 ```
 
 #### DELETE `todos/:id`
