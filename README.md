@@ -48,6 +48,9 @@ Returns 200 on success with JSON object containing link to newly created todo it
 }
 ```
 
+### DELETE `todo-lists/:id``
+Deletes the todo list with id `id`
+
 ### Todo items
 #### GET `todos/:id`
 Returns the todo item with id `id`.
