@@ -66,6 +66,12 @@ app.post('/todo-lists/:id', (req, res, next) => {
       .then(todo => res.json(todo)));
 });
 
+app.delete('/todo-lists/:id', (req, res, next) => {
+  const id = req.params.id;
+  console.log('Deleted todo list with id ' + id);
+  TodoList.findById(id)
+    .then(todoList => todoList.destroy().then(() => res.json({})));
+});
 
 app.get('/todos/:id', (req, res, next) => {
   const id = req.params.id;
